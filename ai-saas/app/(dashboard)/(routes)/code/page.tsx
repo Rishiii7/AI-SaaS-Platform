@@ -6,7 +6,7 @@ import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 import axios from "axios";
 import { z } from 'zod';
 
-import { MessageCircle } from 'lucide-react';
+import { Code } from 'lucide-react';
 import { useForm } from 'react-hook-form'
 import { Heading } from '@/components/heading';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,8 +21,9 @@ import { cn } from '@/lib/utils';
 import { UserAvatar } from '@/components/user-avatar';
 import { BotAvatar } from '@/components/bot-avatar';
 import { Spinner } from '@/components/ui/spinner';
+import ReactMarkdown from 'react-markdown';
 
-const ConversationPage = () => {
+const CodePage = () => {
 
     const [messages, setMessages] = useState<ChatCompletionUserMessageParam[]>([]);
 
@@ -46,11 +47,11 @@ const ConversationPage = () => {
 
             const newMessage = [ ...messages, userMessage]
 
-            const response = await axios.post("http://localhost:3000/api/conversation", {
+            const response = await axios.post("http://localhost:3000/api/code", {
                 messages: newMessage 
             });
             console.log( "Type of resposne : " + typeof response.data);
-            console.log("[CONVERSATION_RESPOSNE] : " + JSON.stringify(response.data));
+            console.log("[CODE_RESPOSNE] : " + JSON.stringify(response.data));
 
 
             setMessages( (prev) =>  [...prev, userMessage, response.data.messages]);
@@ -70,11 +71,11 @@ const ConversationPage = () => {
     <>
         <div>
             <Heading 
-                title='Conversation'
-                description='Our Most Advanced comversation Model'
-                icon={MessageCircle}
-                iconColor='text-violet-500'
-                bgColor='bg-violet-500/10'
+                title='Code Generation'
+                description='Our Most Advanced Code Generation Model'
+                icon={Code}
+                iconColor='text-cyan-500'
+                bgColor='bg-cyan-500/10'
             />
             <div className='px-4 lg:px-8'>
                 <div>
@@ -89,7 +90,7 @@ const ConversationPage = () => {
                                     <FormItem className='col-span-12 lg:col-span-10'>
                                         <FormControl className='m-0 p-0'>
                                             <Input 
-                                                placeholder='Ask you questions here !!' 
+                                                placeholder='Simple toggle button using react hooks' 
                                                 {...field}
                                                 className='border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent'
                                                 disabled={isLoading}
@@ -98,7 +99,7 @@ const ConversationPage = () => {
                                     </FormItem>
                                 )}
                             />
-                            
+
                             <Button 
                                 className='col-span-12 lg:col-span-2 w-full'
                                 disabled={isLoading}
@@ -128,7 +129,7 @@ const ConversationPage = () => {
                             return (
                                 <>
                                   <div
-                                    className={ cn("p-8 w-full flex items-center gap-x-8 rounded-lg",
+                                    className={ cn("p-8 w-full flex gap-x-8 rounded-lg",
                                         message.role === "user" ? "bg-white border border-black/10 ": "bg-muted")
                                      } 
                                     key={ind}
@@ -137,9 +138,21 @@ const ConversationPage = () => {
                                             message.role === "user" ? 
                                                 <UserAvatar /> : <BotAvatar />
                                         }
-                                        <p className='text-sm'>
-                                        { message.content as string }
-                                        </p>
+                                        <ReactMarkdown
+                                            components={{
+                                                pre: ({ node, ...props}) => (
+                                                    <div className='overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg'>
+                                                        <pre {...props}/>
+                                                    </div>
+                                                ),
+                                                code: ({ node, ...props}) => (
+                                                    <code className='bg-black/10 rounded-lg p-1' {...props} />
+                                                )
+                                            }}
+                                            className='text-sm overflow-hidden leading-7'
+                                        >
+                                            { message.content as string || ""}
+                                        </ReactMarkdown>
                                   </div>
                                 
                                 </>
@@ -153,4 +166,4 @@ const ConversationPage = () => {
   )
 }
 
-export default ConversationPage;
+export default CodePage;
