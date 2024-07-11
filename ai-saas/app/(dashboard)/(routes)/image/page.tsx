@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 import axios from "axios";
 import { z } from 'zod';
 
