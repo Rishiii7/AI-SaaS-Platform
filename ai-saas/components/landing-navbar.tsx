@@ -23,7 +23,7 @@ export const LandingNavbar = () => {
         {/* LandingNavbar */}
         <Link href={"/"} className='flex items-center'>
           <div className=' relative h-10 w-10 mr-4 '>
-            <Image src="/logo.png" alt="logo" layout="fill" objectFit="contain" />
+            <Image src="/logo.png" alt="logo" layout="fill" />
           </div>
           <h1 className={cn('text-2xl font-bold', font.className)}>
             Inspire AI
