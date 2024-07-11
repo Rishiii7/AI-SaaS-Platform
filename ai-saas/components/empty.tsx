@@ -10,13 +10,13 @@ export const Empty = ({
   return (
     <>
         <div className=" h-full p-20 flex flex-col items-center justify-center">
-            <div className=" relative h-72 w-72">
+            {/* <div className=" relative h-72 w-72">
                 <Image 
                     alt="empty"
                     fill
                     src={"/empty.png"}
                 />
-            </div>
+            </div> */}
             <p className="text-muted-foreground text-sm text-center">
                 { label }
             </p>
