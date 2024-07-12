@@ -1,4 +1,5 @@
 
+import { checkApiLimit, increaseApiLimit } from "@/lib/api-limit";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from 'replicate';
@@ -38,6 +39,13 @@ export async function POST(
             }, { status: 400});
         }
 
+        const freeTrail = await checkApiLimit();
+        if( !freeTrail ) {
+            return NextResponse.json({
+                messages: "Free trail expired"
+            }, { status: 403});
+        }
+
         console.log("[PROMPT] : "+ prompt)
 
         const response = await replicate.run("meta/musicgen:671ac645ce5e552cc63a54a2bbff63fcf798043055d2dac5fc9e36a837eedcfb", {
@@ -45,6 +53,8 @@ export async function POST(
                 prompt: prompt,
             }
         });
+
+        await increaseApiLimit();
 
         return NextResponse.json({
             message: response

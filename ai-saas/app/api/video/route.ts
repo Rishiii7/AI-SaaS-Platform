@@ -1,4 +1,5 @@
 
+import { checkApiLimit, increaseApiLimit } from "@/lib/api-limit";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from 'replicate';
@@ -38,6 +39,13 @@ export async function POST(
             }, { status: 400});
         }
 
+        const freeTrail = await checkApiLimit();
+        if( !freeTrail ) {
+            return NextResponse.json({
+                messages: "Free trail expired"
+            }, { status: 403});
+        }
+
         console.log("[PROMPT] : "+ prompt)
 
         const response = await replicate.run("anotherjesse/zeroscope-v2-xl:9f747673945c62801b13b84701c783929c0ee784e4748ec062204894dda1a351", {
@@ -45,6 +53,8 @@ export async function POST(
                 prompt: prompt,
             }
         });
+
+        await increaseApiLimit();
 
         return NextResponse.json({
             message: response
