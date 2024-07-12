@@ -16,10 +16,13 @@ import { Empty } from '@/components/empty';
 
 import { formSchema } from './constants';
 import { Loader } from '@/components/loader';
+import { useProModel } from '@/hooks/use-pro-model';
 
 const MusicPage = () => {
 
     const [music, setMusic] = useState<string>();
+
+    const proModel = useProModel();
 
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -47,8 +50,12 @@ const MusicPage = () => {
 
             form.reset();
 
-        } catch( error ) {
+        } catch( error: any ) {
             console.log("[MUSIC_ERROR_IN_CLIENT] : " + error);
+
+            if( error?.response?.status === 403) {
+                proModel.onOpen()
+            }
         } finally {
             router.refresh();
         }

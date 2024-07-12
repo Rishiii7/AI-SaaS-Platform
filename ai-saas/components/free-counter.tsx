@@ -4,6 +4,7 @@ import { MAX_FREE_COUNTS } from '@/constants';
 import { Progress } from "@/components/ui/progress"
 import { Button } from './ui/button';
 import { Zap } from 'lucide-react';
+import { useProModel } from '@/hooks/use-pro-model';
 
 
 export const FreeCounter = ({
@@ -12,6 +13,8 @@ export const FreeCounter = ({
     apiLimitCount: number
 }) => {
     const [mounted, setMounted] = useState(false);
+
+    const proModel = useProModel();
 
     useEffect( () => {
         setMounted(true);
@@ -35,7 +38,10 @@ export const FreeCounter = ({
                             className='[&>*]:bg-gradient-to-r from-[#FF4500] to-[#6666FF] h-3'
                         />
                     </div>
-                    <Button className='w-full bg-gradient-to-r from-[#FF4500] to-[#6666FF] border-0'>
+                    <Button 
+                        className='w-full bg-gradient-to-r from-[#FF4500] to-[#6666FF] border-0'
+                        onClick={proModel.onOpen}
+                    >
                         Upgrade to Pro
                         <Zap className=' h-4 w-4 ml-4'/>
                     </Button>

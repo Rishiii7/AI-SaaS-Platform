@@ -30,6 +30,7 @@ export async function POST(
         }
 
         const freeTrail = await checkApiLimit();
+        console.log("[FREE_TRAIL] : " + freeTrail)
         if( !freeTrail ) {
             return NextResponse.json({
                 messages: "Free trail expired"

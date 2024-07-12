@@ -16,10 +16,12 @@ import { Empty } from '@/components/empty';
 
 import { formSchema } from './constants';
 import { Loader } from '@/components/loader';
+import { useProModel } from '@/hooks/use-pro-model';
 
 const VideoPage = () => {
 
     const [video, setVideo] = useState<string>();
+    const proModel = useProModel();
 
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -47,8 +49,12 @@ const VideoPage = () => {
 
             form.reset();
 
-        } catch( error ) {
+        } catch( error: any ) {
             console.log("[VIDEO_ERROR_IN_CLIENT] : " + error);
+
+            if( error?.response?.status === 403) {
+                proModel.onOpen()
+            }
         } finally {
             router.refresh();
         }

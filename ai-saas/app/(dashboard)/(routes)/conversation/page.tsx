@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 import axios from "axios";
@@ -20,11 +20,12 @@ import { Loader } from '@/components/loader';
 import { cn } from '@/lib/utils';
 import { UserAvatar } from '@/components/user-avatar';
 import { BotAvatar } from '@/components/bot-avatar';
-import { Spinner } from '@/components/ui/spinner';
+import { useProModel } from '@/hooks/use-pro-model';
 
 const ConversationPage = () => {
 
     const [messages, setMessages] = useState<ChatCompletionUserMessageParam[]>([]);
+    const proModel = useProModel();
 
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -46,6 +47,7 @@ const ConversationPage = () => {
 
             const newMessage = [ ...messages, userMessage]
 
+
             const response = await axios.post("http://localhost:3000/api/conversation", {
                 messages: newMessage 
             });
@@ -59,8 +61,11 @@ const ConversationPage = () => {
 
             form.reset();
 
-        } catch( error ) {
-            console.log("[CONVERSATION_ERROR_IN_CLIENT] : " + error);
+        } catch( error: any ) {
+            console.log("[CONVERSATION_ERROR_IN_CLIENT] : " + JSON.stringify(error));
+            if( error?.response?.status === 403) {
+                proModel.onOpen()
+            }
         } finally {
             router.refresh();
         }

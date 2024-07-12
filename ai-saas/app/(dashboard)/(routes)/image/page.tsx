@@ -28,9 +28,11 @@ import {
 import { Card, CardFooter } from '@/components/ui/card';
 import { Download, ImageIcon } from 'lucide-react';
 import Image from 'next/image';
+import { useProModel } from '@/hooks/use-pro-model';
 
 const ImagePage = () => {
     const [images, setImages] = useState<string []>([]);
+    const proModel = useProModel();
 
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -61,8 +63,11 @@ const ImagePage = () => {
 
             form.reset();
 
-        } catch( error ) {
+        } catch( error: any ) {
             console.log("[IMAGE_ERROR_IN_CLIENT] : " + error);
+            if( error?.response?.status === 403) {
+                proModel.onOpen()
+            }
         } finally {
             router.refresh();
         }

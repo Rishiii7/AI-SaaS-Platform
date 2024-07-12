@@ -108,11 +108,10 @@ const Sidebar = ({
 
                 </div>
             </div>
-        </div>
-        {/* <p className="text-white"> { apiLimitCount } </p> */}
         <FreeCounter 
             apiLimitCount={apiLimitCount}
         />
+        </div>
     </>
   )
 }
