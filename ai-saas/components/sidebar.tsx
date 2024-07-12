@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 
 import { cn } from "@/lib/utils";
 import { Code, ImageIcon, LayoutDashboard, MessageCircle, Music, Settings, Video } from "lucide-react";
+import { FreeCounter } from "@/components/free-counter";
 
 const monstserrat = Montserrat({
     weight: '400',
@@ -51,7 +52,11 @@ const routes = [{
     },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({
+    apiLimitCount=0
+} : {
+    apiLimitCount : number
+}) => {
 
     const pathname = usePathname();
 
@@ -73,7 +78,7 @@ const Sidebar = () => {
                         
                     </div>
                     <div
-                        className={cn("bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% bg-clip-text text-transparent text-2xl font-bold", monstserrat.className)}>
+                        className={cn("bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% bg-clip-text text-transparent text-2xl ", monstserrat.className)}>
                         Inspire AI
                     </div>
                 </Link>
@@ -104,6 +109,10 @@ const Sidebar = () => {
                 </div>
             </div>
         </div>
+        {/* <p className="text-white"> { apiLimitCount } </p> */}
+        <FreeCounter 
+            apiLimitCount={apiLimitCount}
+        />
     </>
   )
 }
