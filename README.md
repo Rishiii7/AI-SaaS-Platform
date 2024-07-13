@@ -4,7 +4,7 @@
 
 ## To run the application
 ```
-git clone <http://...>
+git clone https://github.com/Rishiii7/AI-SaaS-Platform.git
 cd ai-saas/
 npm i
 npm run dev
