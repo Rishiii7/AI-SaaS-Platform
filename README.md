@@ -9,3 +9,7 @@ cd ai-saas/
 npm i
 npm run dev
 ```
+
+
+## Environment files
+see the `.env.local` file for all the environment variable you needed to run this application
