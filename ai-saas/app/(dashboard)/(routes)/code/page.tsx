@@ -47,7 +47,7 @@ const CodePage = () => {
 
             const newMessage = [ ...messages, userMessage]
 
-            const response = await axios.post("http://localhost:3000/api/code", {
+            const response = await axios.post("/api/code", {
                 messages: newMessage 
             });
             console.log( "Type of resposne : " + typeof response.data);

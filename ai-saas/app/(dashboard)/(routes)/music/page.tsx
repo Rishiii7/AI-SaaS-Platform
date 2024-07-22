@@ -40,7 +40,7 @@ const MusicPage = () => {
             // console.log( values );
             
 
-            const response = await axios.post("http://localhost:3000/api/music", {
+            const response = await axios.post("/api/music", {
                 prompt: values.prompt
             });
 

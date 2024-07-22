@@ -39,7 +39,7 @@ const VideoPage = () => {
             // console.log( values );
             
 
-            const response = await axios.post("http://localhost:3000/api/video", {
+            const response = await axios.post("/api/video", {
                 prompt: values.prompt
             });
 

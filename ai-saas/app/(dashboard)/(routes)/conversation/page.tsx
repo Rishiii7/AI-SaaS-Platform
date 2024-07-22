@@ -48,7 +48,7 @@ const ConversationPage = () => {
             const newMessage = [ ...messages, userMessage]
 
 
-            const response = await axios.post("http://localhost:3000/api/conversation", {
+            const response = await axios.post("/api/conversation", {
                 messages: newMessage 
             });
             console.log( "Type of resposne : " + typeof response.data);

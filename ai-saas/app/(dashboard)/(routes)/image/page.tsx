@@ -53,7 +53,7 @@ const ImagePage = () => {
 
             // console.log( values );
 
-            const response = await axios.post("http://localhost:3000/api/image", values);
+            const response = await axios.post("/api/image", values);
 
             console.log("[IMAGE_RESPOSNE] : " + JSON.stringify(response.data));
 
